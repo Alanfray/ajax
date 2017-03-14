@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link charset="utf-8" type="text/css" rel="stylesheet" href="css/tab.css"/>
+</head>
+<body>
+<div id="tab">
+    <h2><span>学号</span><span>性别</span><span>分数</span></h2>
+    <ul id="tabList"></ul>
+    <ul id="tabPage"></ul>
+</div>
+<!--
+ 分页实现的原理，第一种思路
+ 1)获取所有的数据
+ 2)规定一下每页显示多少条数据 总页数
+ 3)把第一页的数据绑定到我们的页面中
+    //第一页:i=0 i<10
+    //第二页:i=10 i<20
+    //第三页:i=20 i<30
+    //i=(curPage-1)*count  i<count*curPage
+ 4)给每一个页面的按钮绑定点击事件，当点击的时候，把对应数据重新的绑定到我们页面中
+-->
+<script charset="utf-8" type="text/javascript" src="js/utils.js"></script>
+<script charset="UTF-8" type="text/javascript">
+    var listModel = {
+        count: 10,
+        totalPage: 0,
+        data: null,
+        bindData: function (curPage) {
+            var tabList = document.getElementById("tabList");
+            var str = "";
+            for (var i = (curPage - 1) * this.count; i < curPage * this.count; i++) {
+                var cur = this.data[i];
+                if (!cur) {
+                    //为了防止最后一页数据不足，导致报错问题
+                    break;
+                }
+                //为了防止数据出错和进行数据的特殊处理，我们一般在绑定之前，首先进行数据的默认值初始化
+                cur.num = cur.num || "--";
+                cur.sex = cur.sex == 1 ? "男" : "女";
+                cur.score = cur.score || 0;
+                str += "<li num='" + cur.num + "'>";
+                for (var key in cur) {
+                    str += "<span>" + cur[key] + "</span>";
+                }
+                str += "</li>";
+            }
+            tabList.innerHTML = str;
+            //添加隔行变色和点击事件
+            var oLis = tabList.getElementsByTagName("li");
+            for (var i = 0; i < oLis.length; i++) {
+                oLis[i].className = i % 2 === 1 ? "col" : null;
+                oLis[i].onclick = function () {
+                    var address = "detail.html?";
+                    address += "num=" + this.getAttribute("num");
+                    //address += "&u=" + encodeURIComponent("http://www.baidu.com/index.html?num=12");
+                    //encodeURI
+                    //decodeURI
+                    window.location.href = address;
+                }
+            }
+        },
+        bindPage: function () {
+            var tabPage = document.getElementById("tabPage");
+            var str = "";
+            for (var i = 1; i <= this.totalPage; i++) {
+                if (i === 1) {
+                    str += "<li class='cur'>" + i + "</li>";
+                    continue;
+                }
+                str += "<li>" + i + "</li>";
+            }
+            tabPage.innerHTML = str;
+        },
+        pageEvent: function () {
+            var that = this;
+            var tabPage = document.getElementById("tabPage");
+            var oLis = tabPage.getElementsByTagName("li");
+            for (var i = 0; i < oLis.length; i++) {
+                oLis[i].index = i;
+
+                oLis[i].onclick = function () {
+                    for (var k = 0; k < oLis.length; k++) {
+                        oLis[k].className = null;
+
+                    }
+                    this.className = "cur";
+                    that.bindData(this.index+1);
+                    //console.log(this.index);
+                }
+
+
+            }
+        },
+        init: function (data) {
+            this.data = data;
+            this.totalPage = Math.ceil(this.data.length / this.count);
+            this.bindPage();
+            this.bindData(1);
+            this.pageEvent();
+        }
+    };
+
+    utils.ajax("data.txt", function (data) {
+        listModel.init(data);
+    });
+</script>
+</body>
+</html>

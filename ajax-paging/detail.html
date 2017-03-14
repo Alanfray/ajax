@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="div1" style="font-size: 28px;"></div>
+<script charset="utf-8" type="text/javascript" src="js/utils.js"></script>
+<script charset="UTF-8" type="text/javascript">
+    var oDiv = document.getElementById("div1");
+    var url = window.location.href;
+    var num = queryURLParameter(url).num;
+
+    utils.ajax("data.txt", function (data) {
+        for (var i = 0; i < data.length; i++) {
+            var cur = data[i];
+            if (cur.num == num) {
+                var str = "";
+                for (var key in cur) {
+                    str += key + ":" + cur[key] + "</br></br>";
+                }
+                oDiv.innerHTML = str;
+                break;
+            }
+        }
+    });
+
+    function queryURLParameter(url) {
+        var obj = {};
+        var reg = /([^?=&]+)=([^?=&]+)/g;
+        var res = reg.exec(url);
+        while (res) {
+            obj[res[1]] = decodeURIComponent(res[2]);
+            res = reg.exec(url);
+        }
+        console.log(obj);
+        return obj;
+    }
+
+</script>
+</body>
+</html>

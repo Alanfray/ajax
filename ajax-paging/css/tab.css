@@ -1,0 +1,76 @@
+body, div, h2, ul, li, span {
+    margin: 0;
+    padding: 0;
+    font-family: "\5FAE\8F6F\96C5\9ED1", Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+ul, li {
+    list-style: none;
+}
+
+#tab {
+    margin: 50px auto;
+    padding: 20px;
+    width: 300px;
+    border: 1px solid #31b0d5;
+    border-radius: 10px;
+}
+
+#tab h2 {
+    background: #31b0d5;
+    overflow: hidden;
+}
+
+#tab h2 span, #tabList li span {
+    display: block;
+    float: left;
+    width: 100px;
+    text-align: center;
+}
+
+#tab h2 span {
+    height: 35px;
+    line-height: 35px;
+}
+
+#tabList, #tabPage {
+    margin-top: 5px;
+}
+
+#tabList li {
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+#tabList li.col {
+    background: #FFF38F;
+}
+
+#tabPage {
+    text-align: right;
+}
+
+#tabPage li {
+    display: inline-block;
+    margin-left: 5px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    font-size: 12px;
+    border: 1px solid #31b0d5;
+    cursor: pointer;
+}
+
+#tabPage li.cur {
+    color: #f7f7f7;
+    background: #31b0d5;
+    cursor: inherit;
+}
+
+
+
+
+
